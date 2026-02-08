@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-gray-900 px-6 py-12">

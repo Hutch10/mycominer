@@ -131,7 +131,7 @@ class MultiAgentOrchestrator {
     return Array.from(this.agents.values());
   }
 
-  routeMessage(sessionId: string, userMessage: string, context?: Record<string, any>): OrchestrationResult {
+  routeMessage(_sessionId: string, userMessage: string, _context?: Record<string, any>): OrchestrationResult {
     const messageLower = userMessage.toLowerCase();
     const scores: Record<string, number> = {};
     const matchedRulesMap: Record<string, string[]> = {};

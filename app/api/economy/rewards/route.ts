@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '../../../../lib/db/index';
+import { db } from '../../../lib/db/index';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

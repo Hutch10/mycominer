@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '../../../../lib/db/index';
-import { paymentsAdapter } from '../../../../lib/payments/stripeAdapter';
-import { calculateRevenueShares } from '../../../../lib/economy/revenueShareEngine';
+import { db } from '../../../lib/db/index';
+import { paymentsAdapter } from '../../../lib/payments/stripeAdapter';
+import { calculateRevenueShares } from '../../../lib/economy/revenueShareEngine';
 
 const Body = z.object({ orgId: z.string(), itemId: z.string(), paymentMethodId: z.string(), price: z.number() });
 

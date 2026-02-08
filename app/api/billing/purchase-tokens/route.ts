@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { paymentsAdapter } from '../../../../lib/payments/stripeAdapter';
-import { licenseService } from '../../../../lib/economy/licenseService';
+import { paymentsAdapter } from '../../../lib/payments/stripeAdapter';
+import { licenseService } from '../../../lib/economy/licenseService';
 
 const Body = z.object({ orgId: z.string(), amount: z.number().positive(), paymentMethodId: z.string() });
 

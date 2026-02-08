@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { WorkflowSchema } from '../../../../lib/orchestration/schemas';
-import { db } from '../../../../lib/db/inMemoryDb';
+import { WorkflowSchema } from '../../../lib/orchestration/schemas';
+import { db } from '../../../lib/db/inMemoryDb';
 
 export async function POST(req: Request) {
   const body = await req.json();

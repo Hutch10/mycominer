@@ -38,7 +38,7 @@ class PolicyEngine {
     maxResponseLength: 10000,
   };
 
-  preMessageCheck(message: string, context?: Record<string, any>): PolicyValidationResult {
+  preMessageCheck(message: string, _context?: Record<string, any>): PolicyValidationResult {
     const checks: PolicyCheckResult[] = [];
     const timestamp = new Date().toISOString();
 
@@ -96,7 +96,7 @@ class PolicyEngine {
     };
   }
 
-  postMessageCheck(response: string, context?: Record<string, any>): PolicyValidationResult {
+  postMessageCheck(response: string, _context?: Record<string, any>): PolicyValidationResult {
     const checks: PolicyCheckResult[] = [];
     const timestamp = new Date().toISOString();
 

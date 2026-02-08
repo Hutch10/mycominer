@@ -1,8 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { getAllFacilitiesEconomics, getMarketSnapshot } from '../../../lib/monetization/insights-api';
-import { ErrorBoundary } from '../../../ui/components/economics/ErrorBoundary';
-import { BatchEconomicsCard, RoomEconomicsCard, FacilityEconomicsCard, ScenarioComparisonView, MarketSnapshotPanel, SimulationSnapshotPanel, ScenarioProjectionView, PredictiveTrendsPanel } from '../../../ui/components/economics';
+import { getAllFacilitiesEconomics, getMarketSnapshot } from '../../lib/monetization/insights-api';
 
 export const metadata: Metadata = {
   title: 'Economics Dashboard',
@@ -36,14 +34,6 @@ export default async function Page() {
     marketSnapshot = null;
   }
 
-  // sample identifiers for demo; in real UI these are dynamic/route-driven
-  const sampleBatchId = 'BATCH-1';
-  const sampleRoomId = 'ROOM-1';
-  const sampleFacilityId = 'FAC-1';
-  const sampleScenarioIds = ['S1', 'S2'];
-  const sampleHistorical = [100, 110, 115, 120];
-  const kgOpts = {};
-
   return (
     <main className="p-4 min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="max-w-7xl mx-auto">
@@ -52,31 +42,25 @@ export default async function Page() {
           <RefreshControlsClient />
         </header>
 
-        <ErrorBoundary>
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <BatchEconomicsCard batchId={sampleBatchId} batchProfits={[]} />
-            <RoomEconomicsCard roomId={sampleRoomId} batchProfits={[]} />
-            <FacilityEconomicsCard facilityId={sampleFacilityId} batchProfits={[]} />
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <ScenarioComparisonView scenarioIds={sampleScenarioIds} scenariosMap={{}} />
-            </div>
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <MarketSnapshotPanel marketOutputs={marketSnapshot ? [marketSnapshot.data] : []} />
-            </div>
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <SimulationSnapshotPanel id={sampleBatchId} type="batch" batchOut={{}} params={{ periods: 3, growthRate: 0.02 }} />
-            </div>
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <ScenarioProjectionView scenarioId={'SC-EX'} branches={[{ batchIds: ['BATCH-1'], adjustments: { growthRate: 0.03 } }, { batchIds: ['BATCH-2'], adjustments: { growthRate: 0.01 } }]} precomputedBatchOuts={[]} params={{ periods: 4 }} />
-            </div>
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <PredictiveTrendsPanel entityId={'FAC-1'} historicalValues={sampleHistorical} opts={{ shockPct: 0.05, elasticity: 1 }} />
-            </div>
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <KnowledgeGraphPreviewPanel opts={kgOpts} />
-            </div>
-          </section>
-        </ErrorBoundary>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="p-4 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-bold mb-2">Facilities Economics</h2>
+            {allFacilities ? (
+              <pre className="text-sm overflow-auto">{JSON.stringify(allFacilities, null, 2)}</pre>
+            ) : (
+              <p className="text-gray-500">No data available</p>
+            )}
+          </div>
+          
+          <div className="p-4 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-bold mb-2">Market Snapshot</h2>
+            {marketSnapshot ? (
+              <pre className="text-sm overflow-auto">{JSON.stringify(marketSnapshot, null, 2)}</pre>
+            ) : (
+              <p className="text-gray-500">No data available</p>
+            )}
+          </div>
+        </section>
       </div>
     </main>
   );

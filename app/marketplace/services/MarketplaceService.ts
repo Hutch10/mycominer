@@ -14,9 +14,9 @@ import {
   ExtensionInstallation,
   ExtensionStats,
   ExtensionPricing,
-} from '../types';
-import { federationRegistry } from '../services/FederationRegistry';
-import { policyEngine } from '../services/FederationPolicyEngine';
+} from '../../federation/types';
+import { federationRegistry } from '../../federation/services/FederationRegistry';
+import { policyEngine } from '../../federation/services/FederationPolicyEngine';
 
 export class MarketplaceService {
   private extensions: Map<string, MarketplaceExtension> = new Map();

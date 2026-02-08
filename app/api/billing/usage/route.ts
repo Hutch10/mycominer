@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { meteringService } from '../../../../lib/economy/meteringService';
+import { meteringService } from '../../../lib/economy/meteringService';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

@@ -17,14 +17,12 @@ import {
   QueryLogEntry,
   GroupLogEntry,
   RoutingLogEntry,
-  PolicyDecisionLogEntry,
   LifecycleChangeLogEntry,
   ErrorLogEntry,
   ActionStatistics,
   ActionSeverity,
   ActionStatus,
   ActionSource,
-  ActionPolicyDecision,
 } from './actionTypes';
 
 // ============================================================================

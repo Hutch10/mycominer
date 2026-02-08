@@ -14,7 +14,6 @@ import {
   ActionPolicyDecision,
   ActionCategory,
   ActionSource,
-  ActionLogEntry,
   PolicyDecisionLogEntry,
 } from './actionTypes';
 

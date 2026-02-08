@@ -28,7 +28,6 @@ export interface ReasoningGraph {
 
 class GraphSystem {
   private graphs: Map<string, ReasoningGraph> = new Map();
-  private maxGraphs: number = 100;
   private maxNodesPerGraph: number = 300;
 
   initializeGraph(sessionId: string): void {

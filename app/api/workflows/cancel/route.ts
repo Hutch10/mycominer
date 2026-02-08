@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '../../../../lib/db/inMemoryDb';
+import { db } from '../../../lib/db/inMemoryDb';
 
 const Body = z.object({ runId: z.string() });
 

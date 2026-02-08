@@ -190,7 +190,8 @@ export class GovernanceLog {
       .slice(0, 10);
 
     // Count by action
-    const actionCounts: Partial<Record<GovernanceAction, number>> = {};\n    for (const entry of this.log) {
+    const actionCounts: Partial<Record<GovernanceAction, number>> = {};
+    for (const entry of this.log) {
       const action = entry.action as GovernanceAction;
       if (action) {
         actionCounts[action] = (actionCounts[action] || 0) + 1;

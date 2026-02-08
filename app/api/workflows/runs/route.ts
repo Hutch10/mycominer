@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '../../../../lib/db/inMemoryDb';
+import { db } from '../../../lib/db/inMemoryDb';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

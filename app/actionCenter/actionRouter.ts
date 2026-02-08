@@ -10,12 +10,7 @@
 
 import {
   ActionTask,
-  ActionCategory,
   ActionSeverity,
-  ActionSource,
-  ActionScope,
-  AffectedEntity,
-  ActionReference,
   RemediationMetadata,
   AlertInput,
   AuditFindingInput,
