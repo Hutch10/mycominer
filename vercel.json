@@ -1,26 +1,13 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/next"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html",
-      "status": 200
-    }
-  ],
   "env": {
-    "AGENT_RUNTIME_URL": {
-      "description": "URL of the agent runtime service",
-      "default": "http://localhost:8080"
-    }
+    "AGENT_RUNTIME_URL": "http://localhost:8080"
   },
   "buildCommand": "npm run build",
   "framework": "nextjs"
