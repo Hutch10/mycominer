@@ -1,35 +1,51 @@
 /**
- * Workflow Scheduler Stub
- * 
- * Schedules and executes workflows.
- * In production, integrate with actual workflow scheduler (Temporal, Llama Index, etc.)
+ * Workflow Scheduler
+ *
+ * Schedules workflow runs and persists them atomically when Supabase is configured.
  */
 
-interface ScheduleResult {
+import type { ExecuteRequest } from './schemas';
+import { db } from '../db';
+import type { AuditContext } from '../db/auditContext';
+
+export interface ScheduleResult {
   runId: string;
   workflowId: string;
-  status: 'scheduled' | 'running' | 'completed' | 'failed';
+  status: 'scheduled' | 'running' | 'completed' | 'failed' | 'cancelling' | 'cancelled';
   scheduledAt: string;
 }
 
-/**
- * Schedule a workflow run
- */
 export async function scheduleRun(
-  workflowId: string,
-  input?: Record<string, any>
+  orgId: string,
+  request: ExecuteRequest,
+  audit: AuditContext
 ): Promise<ScheduleResult> {
+  const run = await db.scheduleRunWithLog(
+    orgId,
+    {
+      workflowId: request.workflowId,
+      input: request.input,
+      runId: request.runId,
+    },
+    audit
+  );
+
   return {
-    runId: `run_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-    workflowId,
-    status: 'scheduled',
-    scheduledAt: new Date().toISOString(),
+    runId: run.id,
+    workflowId: run.workflowId,
+    status: run.status as ScheduleResult['status'],
+    scheduledAt: run.scheduledAt,
   };
 }
 
-/**
- * Get run status
- */
-export async function getRunStatus(runId: string): Promise<ScheduleResult | null> {
-  return null; // Stub
+export async function getRunStatus(orgId: string, runId: string): Promise<ScheduleResult | null> {
+  const run = await db.findWorkflowRunById(orgId, runId);
+  if (!run) return null;
+
+  return {
+    runId: run.id,
+    workflowId: run.workflowId,
+    status: run.status as ScheduleResult['status'],
+    scheduledAt: run.scheduledAt,
+  };
 }

@@ -1,13 +1,31 @@
 import { NextResponse } from 'next/server';
 import { WorkflowSchema } from '../../../lib/orchestration/schemas';
-import { db } from '../../../lib/db/inMemoryDb';
+import { toAuditContext } from '../../../lib/db/auditContext';
+import { db } from '../../../lib/db';
+import { withPersistenceAuthOrg } from '../../../lib/auth/withPersistenceAuth';
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  const wf = WorkflowSchema.parse(body);
-  const existing = db.findById('workflows', wf.id);
-  if (existing) return NextResponse.json({ error: 'workflow_exists' }, { status: 409 });
-  const saved = db.insert('workflows', { ...wf, createdAt: new Date().toISOString() });
-  db.insert('orchestration_log', { id: `log_${Date.now()}`, eventType: 'workflow_created', workflowId: saved.id, payload: saved, timestamp: new Date().toISOString() });
-  return NextResponse.json({ workflow: saved });
-}
+export const POST = withPersistenceAuthOrg(
+  async (req, ctx) => {
+    const body = await req.json();
+    const wf = WorkflowSchema.parse(body);
+
+    if (wf.id && (await db.workflowExists(ctx.orgId, wf.id))) {
+      return NextResponse.json({ error: 'workflow_exists' }, { status: 409 });
+    }
+
+    const saved = await db.createWorkflowWithLog(
+      ctx.orgId,
+      {
+        id: wf.id,
+        name: wf.name,
+        description: wf.description,
+        steps: wf.steps,
+        enabled: wf.enabled,
+      },
+      toAuditContext(ctx)
+    );
+
+    return NextResponse.json({ workflow: saved });
+  },
+  { rateLimit: 'mutation' }
+);

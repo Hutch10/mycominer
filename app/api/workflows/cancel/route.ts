@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '../../../lib/db/inMemoryDb';
+import { toAuditContext } from '../../../lib/db/auditContext';
+import { db } from '../../../lib/db';
+import { withPersistenceAuthOrg } from '../../../lib/auth/withPersistenceAuth';
 
-const Body = z.object({ runId: z.string() });
+const Body = z.object({ runId: z.string().uuid() });
 
-export async function POST(req: Request) {
-  const { runId } = Body.parse(await req.json());
-  const run = db.findById('workflow_runs', runId);
-  if (!run) return NextResponse.json({ error: 'not_found' }, { status: 404 });
-  db.update('workflow_runs', runId, { status: 'cancelling', cancelledAt: new Date().toISOString() });
-  db.insert('orchestration_log', { id: `log_${Date.now()}`, eventType: 'run_cancel_requested', runId, payload: { requestedAt: new Date().toISOString() }, timestamp: new Date().toISOString() });
-  return NextResponse.json({ ok: true });
-}
+export const POST = withPersistenceAuthOrg(
+  async (req, ctx) => {
+    const { runId } = Body.parse(await req.json());
+    const run = await db.cancelRunWithLog(ctx.orgId, runId, toAuditContext(ctx));
+    if (!run) return NextResponse.json({ error: 'not_found' }, { status: 404 });
+    return NextResponse.json({ ok: true, run });
+  },
+  { rateLimit: 'mutation' }
+);

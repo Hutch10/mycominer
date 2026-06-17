@@ -4,6 +4,8 @@ import semanticContext from '@/agent-runtime/src/system/semanticContext';
 import graphSystem from '@/agent-runtime/src/system/graph';
 import orchestrator from '@/agent-runtime/src/system/orchestrator';
 import policyEngine from '@/agent-runtime/src/system/policyEngine';
+import { withApiMutationAuth } from '@/app/lib/auth/withApiMutationAuth';
+import type { PersistenceAuthContext } from '@/app/lib/auth/persistenceAuth';
 
 /**
  * Agent API Route
@@ -28,7 +30,7 @@ interface AgentRequest {
   sessionId?: string;
 }
 
-export async function POST(req: NextRequest) {
+async function handleAgentPost(req: Request, _ctx: PersistenceAuthContext) {
   console.log('--- API HANDSHAKE DETECTED ---');
   const startTime = Date.now();
   let logId: string | null = null;
@@ -337,6 +339,17 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const POST = withApiMutationAuth(handleAgentPost, {
+  requireOrg: true,
+  rateLimit: 'mutation',
+  auditEventType: 'agent_message_executed',
+  auditPayload: (_req, ctx, response) => ({
+    orgId: ctx.orgId,
+    userId: ctx.userId,
+    status: response.status,
+  }),
+});
 
 // GET endpoint for health check
 export async function GET() {

@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
 import { meteringService } from '../../../lib/economy/meteringService';
+import {
+  assertNoClientOrgOverride,
+  withPersistenceAuthOrg,
+} from '../../../lib/auth/withPersistenceAuth';
 
-export async function GET(req: Request) {
+export const GET = withPersistenceAuthOrg(async (req, ctx) => {
+  const orgDenied = assertNoClientOrgOverride(req, ctx);
+  if (orgDenied) return orgDenied;
+
   const url = new URL(req.url);
-  const orgId = url.searchParams.get('orgId');
   const start = url.searchParams.get('start') || undefined;
   const end = url.searchParams.get('end') || undefined;
-  if (!orgId) return NextResponse.json({ error: 'orgId required' }, { status: 400 });
-  const data = await meteringService.getUsage(orgId, start, end);
+  const data = await meteringService.getUsage(ctx.orgId, start, end);
   return NextResponse.json({ data });
-}
+});

@@ -1,1 +1,1 @@
-export { db } from './inMemoryDb';
+export { db } from './repository';

@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiMutationAuth } from '@/app/lib/auth/withApiMutationAuth';
 
 const AGENT_RUNTIME_URL = process.env.NEXT_PUBLIC_AGENT_RUNTIME_URL || 'http://localhost:8080';
-
-/**
- * Explainability API Route
- *
- * Proxies to the backend explainability endpoint.
- */
 
 export async function GET(req: NextRequest) {
   try {
@@ -39,42 +34,52 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const sessionId = searchParams.get('sessionId');
+export const DELETE = withApiMutationAuth(
+  async (req: Request) => {
+    try {
+      const { searchParams } = new URL(req.url);
+      const sessionId = searchParams.get('sessionId');
 
-    if (!sessionId) {
+      if (!sessionId) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'sessionId parameter required',
+          },
+          { status: 400 }
+        );
+      }
+
+      const backendUrl = new URL(`${AGENT_RUNTIME_URL}/explainability`);
+      backendUrl.searchParams.set('sessionId', sessionId);
+
+      const response = await fetch(backendUrl.toString(), {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      return NextResponse.json(data, { status: response.status });
+    } catch (error) {
+      console.error('Error clearing graph:', error);
       return NextResponse.json(
         {
           success: false,
-          error: 'sessionId parameter required',
+          error: 'Failed to clear graph',
+          details: error instanceof Error ? error.message : 'Unknown error',
         },
-        { status: 400 }
+        { status: 500 }
       );
     }
-
-    const backendUrl = new URL(`${AGENT_RUNTIME_URL}/explainability`);
-    backendUrl.searchParams.set('sessionId', sessionId);
-
-    const response = await fetch(backendUrl.toString(), {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const data = await response.json();
-    return NextResponse.json(data, { status: response.status });
-  } catch (error) {
-    console.error('Error clearing graph:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to clear graph',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+  },
+  {
+    requireOrg: true,
+    rateLimit: 'mutation',
+    auditEventType: 'explainability_graph_cleared',
+    auditPayload: (req) => ({
+      sessionId: new URL(req.url).searchParams.get('sessionId'),
+    }),
   }
-}
+);

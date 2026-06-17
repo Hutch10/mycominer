@@ -5,9 +5,10 @@
  * Searches marketplace extensions with filters
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { marketplaceService } from '@/app/marketplace/services/MarketplaceService';
+import { withPersistenceAuth } from '../../../lib/auth/withPersistenceAuth';
 
 const SearchSchema = z.object({
   q: z.string().min(1).max(100),
@@ -17,10 +18,10 @@ const SearchSchema = z.object({
   limit: z.coerce.number().min(1).max(100).default(20),
 });
 
-export async function GET(request: NextRequest) {
+export const GET = withPersistenceAuth(async (request) => {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    
+    const searchParams = new URL(request.url).searchParams;
+
     const validated = SearchSchema.parse({
       q: searchParams.get('q'),
       type: searchParams.get('type'),
@@ -29,19 +30,17 @@ export async function GET(request: NextRequest) {
       limit: searchParams.get('limit'),
     });
 
-    // Search extensions
     const results = await marketplaceService.searchExtensions(validated.q, {
       type: validated.type,
       category: validated.category,
       minRating: validated.minRating,
     });
 
-    // Limit results
     const limited = results.slice(0, validated.limit);
 
     return NextResponse.json({
       success: true,
-      results: limited.map(ext => ({
+      results: limited.map((ext) => ({
         id: ext.id,
         name: ext.name,
         slug: ext.slug,
@@ -61,20 +60,25 @@ export async function GET(request: NextRequest) {
       total: results.length,
       query: validated.q,
     });
-
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        success: false,
-        error: 'Invalid search parameters',
-        details: error.errors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid search parameters',
+          details: error.errors,
+        },
+        { status: 400 }
+      );
     }
 
     console.error('[API] Search error:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Search failed',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Search failed',
+      },
+      { status: 500 }
+    );
   }
-}
+});
