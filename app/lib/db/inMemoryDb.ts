@@ -74,6 +74,13 @@ class InMemoryDb {
   query(tableName: string, predicate: (record: DbRecord) => boolean): DbRecord[] {
     return this.all(tableName).filter(predicate);
   }
+
+  /**
+   * Reset all tables (test harness only).
+   */
+  clear(): void {
+    this.tables.clear();
+  }
 }
 
 export const db = new InMemoryDb();
