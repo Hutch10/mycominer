@@ -1,8 +1,10 @@
 # MycoMiner: Multi-Agent Intelligence Platform
 
-A sophisticated Next.js 15 application for human-crafted mushroom intelligence with multi-agent orchestration, policy governance, semantic context tracking, and full explainability. Built with React 19, TypeScript, Tailwind CSS v3, and production-ready deployment configurations.
+A sophisticated Next.js application for the **Mushroom Intelligence Platform** — human-crafted mushroom intelligence with multi-agent orchestration, policy governance, semantic context tracking, and full explainability. Built with React, TypeScript, Tailwind CSS v3, and production-ready deployment configurations.
 
-**Live Demo**: Coming Soon | **Documentation**: [DEPLOYMENT.md](./DEPLOYMENT.md)
+> **Architecture:** The canonical platform architecture is documented in [`docs/architecture/`](./docs/architecture/). Start with [Master Architecture v1.0](./docs/architecture/MUSHROOM_INTELLIGENCE_PLATFORM_MASTER_ARCHITECTURE_v1.0.md).
+
+**Live Demo**: Coming Soon | **Documentation**: [DEPLOYMENT.md](./DEPLOYMENT.md) | **Architecture**: [docs/architecture/](./docs/architecture/)
 
 ---
 
