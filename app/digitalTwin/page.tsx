@@ -3,6 +3,7 @@
 import { DigitalTwinLegend } from './components/DigitalTwinLegend';
 import { DigitalTwinCanvas } from './components/DigitalTwinCanvas';
 import { buildDeterministicTwin } from './digitalTwinEngine';
+import type { DigitalTwinData } from './digitalTwinEngine';
 
 const sampleData = {
   layout: {
@@ -39,7 +40,7 @@ const sampleData = {
       { equipmentId: 'autoclave-01', status: 'offline', alerts: ['Awaiting service'] },
     ],
   },
-};
+} satisfies DigitalTwinData;
 
 export default function DigitalTwinPage() {
   const { snapshot, insights } = buildDeterministicTwin(sampleData);

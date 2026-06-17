@@ -27,7 +27,8 @@ export function addReviewerComment(review: ComplianceReview, comment: string): C
 
 export function recordApproval(review: ComplianceReview, params: { reviewer: string; decision: 'approved' | 'rejected'; reason?: string }): ComplianceReview {
   const approval = { reviewer: params.reviewer, timestamp: new Date().toISOString(), decision: params.decision, reason: params.reason };
-  const updated = { ...review, approvals: [...review.approvals, approval], status: params.decision === 'approved' ? 'approved' : 'draft' };
+  const status: ComplianceReview['status'] = params.decision === 'approved' ? 'approved' : 'draft';
+  const updated = { ...review, approvals: [...review.approvals, approval], status };
   addLog({ category: params.decision === 'approved' ? 'approval' : 'rejection', message: `Review ${params.decision}`, context: { reviewId: review.reviewId, reportId: review.reportId }, details: approval });
   return updated;
 }

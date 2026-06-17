@@ -120,13 +120,13 @@ export function getStepReferences(step: TrainingStep): {
   kgNodeIds: string[];
   totalReferences: number;
 } {
-  const sopIds = step.references.sopIds || [];
-  const workflowIds = step.references.workflowIds || [];
-  const incidentIds = step.references.incidentIds || [];
-  const deviationIds = step.references.deviationIds || [];
-  const capaIds = step.references.capaIds || [];
-  const eventIds = step.references.eventIds || [];
-  const kgNodeIds = step.references.kgNodeIds || [];
+  const sopIds = step.references?.sopIds || [];
+  const workflowIds = step.references?.workflowIds || [];
+  const incidentIds = step.references?.incidentIds || [];
+  const deviationIds = step.references?.deviationIds || [];
+  const capaIds = step.references?.capaIds || [];
+  const eventIds = step.references?.eventIds || [];
+  const kgNodeIds = step.references?.kgNodeIds || [];
 
   return {
     sopIds,

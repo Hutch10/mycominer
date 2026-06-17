@@ -184,6 +184,8 @@ export function getTrainingEngineStats(): {
   totalScenarios: number;
   totalModules: number;
   activeSessions: number;
+  totalSessions: number;
+  completedSessions: number;
   scenariosByDifficulty: Record<string, number>;
   scenariosBySource: Record<string, number>;
 } {
@@ -202,6 +204,8 @@ export function getTrainingEngineStats(): {
     totalScenarios: scenarios.length,
     totalModules: modules.length,
     activeSessions: activeSessions.size,
+    totalSessions: getTrainingSessionLog().filter((e) => e.entryType === 'session-started').length,
+    completedSessions: getTrainingSessionLog().filter((e) => e.entryType === 'session-completed').length,
     scenariosByDifficulty,
     scenariosBySource,
   };

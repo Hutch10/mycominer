@@ -337,7 +337,7 @@ export class FederationAnalyticsEngine {
     description: string,
     severity: 'info' | 'recommendation' | 'warning' | 'opportunity',
     categories: FederationDataCategory[],
-    metrics: FederationMetric[]
+    metrics: Array<FederationMetric | FederationBenchmark>
   ): FederationInsight {
     const recommendations = this.generateRecommendations(type, metrics);
 
@@ -356,7 +356,7 @@ export class FederationAnalyticsEngine {
     };
   }
 
-  private generateRecommendations(type: FederationInsightType, metrics: FederationMetric[]): string[] {
+  private generateRecommendations(type: FederationInsightType, metrics: Array<FederationMetric | FederationBenchmark>): string[] {
     const recommendations: string[] = [];
 
     switch (type) {

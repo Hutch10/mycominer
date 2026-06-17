@@ -94,7 +94,7 @@ export interface FederationInsight {
   description: string;
   severity: 'info' | 'recommendation' | 'warning' | 'opportunity';
   affectedCategories: FederationDataCategory[];
-  evidence: FederationMetric[];
+  evidence: Array<FederationMetric | FederationBenchmark>;
   recommendations: string[];
   createdAt: Date;
   expiresAt?: Date;

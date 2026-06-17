@@ -334,3 +334,19 @@ export interface ScenarioBuildConfig {
   maxSteps: number;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
+
+// Type aliases exported by simulation/index.ts
+export type SimulationMode = SimulationScope['simulationMode'];
+export type SimulationStepType = SimulationStep['stepType'];
+export type SimulationStepStatus = SimulationStep['status'];
+export type SimulationStatus = SimulationState['status'];
+export type SimulationReferenceType = SimulationReference['referenceType'];
+export type SimulationLogEntryType = SimulationLogEntry['entryType'];
+export type SimulationOutcome = SimulationState['outcomes'][number];
+
+export interface SimulationProgress {
+  completedSteps: number;
+  totalSteps: number;
+  percentComplete: number;
+  estimatedTimeRemaining: number;
+}

@@ -283,13 +283,23 @@ export interface FederationMarketplaceEngine {
   initializeMarketplace: (tenantId: string) => void;
   queryListings: (query: MarketplaceQuery) => MarketplaceQueryResult;
   getListing: (listingId: string, tenantId: string) => MarketplaceListing | null;
-  publishAsset: (asset: MarketplaceAsset, tenantId: string) => MarketplaceListing | null;
-  requestSubscription: (listingId: string, tenantId: string, operatorId: string, notes?: string) => MarketplaceSubscription | null;
+  publishAsset: (
+    asset: Omit<MarketplaceAsset, 'assetId' | 'publishedAt' | 'status' | 'subscriberCount' | 'viewCount'>,
+    tenantId: string,
+    operatorId: string
+  ) => MarketplaceListing | null;
+  requestSubscription: (
+    listingId: string,
+    tenantId: string,
+    facilityId: string | undefined,
+    operatorId: string,
+    notes?: string
+  ) => MarketplaceSubscription | null;
   approveSubscription: (subscriptionId: string, approverTenantId: string, approverId: string, reason: string) => boolean;
   rejectSubscription: (subscriptionId: string, approverTenantId: string, approverId: string, reason: string) => boolean;
   getSubscriptions: (tenantId: string) => MarketplaceSubscription[];
-  cancelSubscription: (subscriptionId: string, tenantId: string) => boolean;
-  accessAsset: (assetId: string, tenantId: string) => boolean;
+  cancelSubscription: (subscriptionId: string, tenantId: string, operatorId: string) => boolean;
+  accessAsset: (assetId: string, tenantId: string, facilityId: string | undefined, operatorId: string) => boolean;
   getMarketplaceStats: (tenantId: string) => MarketplaceStats;
 }
 

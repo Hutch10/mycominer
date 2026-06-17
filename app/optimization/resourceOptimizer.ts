@@ -86,7 +86,13 @@ class ResourceOptimizer {
     equipment: EquipmentUtilization[],
     costPerKgSubstrate: Record<string, number> = {}
   ): ResourceOptimizationReport {
-    const detectedWaste = [];
+    const detectedWaste: Array<{
+      category: string;
+      quantity: number;
+      unit: string;
+      estimatedCost: number;
+      reason: string;
+    }> = [];
     let totalWasteCost = 0;
 
     // Analyze substrate waste
@@ -107,12 +113,12 @@ class ResourceOptimizer {
     });
 
     // Analyze equipment underutilization
-    const bottlenecks = equipment
+    const bottlenecks: Array<{ resource: string; impact: string; severity: 'high' | 'medium' | 'low' }> = equipment
       .filter(e => e.utilizationPercent < 50)
       .map(e => ({
         resource: e.name,
         impact: `${e.underutilizationReason ?? 'Under-utilized'}; ${e.potentialCapacity.toFixed(1)} units capacity available`,
-        severity: e.utilizationPercent < 20 ? 'high' : 'medium' as const,
+        severity: (e.utilizationPercent < 20 ? 'high' : 'medium') as 'high' | 'medium',
       }));
 
     return {

@@ -550,9 +550,10 @@ export function getKnowledgePack(packId: string): KnowledgePack | null {
   return knowledgePackRegistry[packId] || null;
 }
 
-export function getKnowledgePacksByTenant(tenantId: string): KnowledgePack[] {
+export function getKnowledgePacksByTenant(tenantId: string, facilityId?: string): KnowledgePack[] {
   return Object.values(knowledgePackRegistry)
     .filter((pack) => pack.tenantId === tenantId && pack.is_active)
+    .filter((pack) => !facilityId || !pack.facilityId || pack.facilityId === facilityId)
     .sort((a, b) => {
       if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
       return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();

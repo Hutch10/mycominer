@@ -12,7 +12,6 @@ import { TrainingProgressTracker } from './TrainingProgressTracker';
 import { TrainingSessionHistoryViewer } from './TrainingSessionHistoryViewer';
 import {
   TrainingModule,
-  TrainingScenario,
   WalkthroughState,
   TrainingStep,
 } from '../trainingTypes';
@@ -61,14 +60,14 @@ export function TrainingDashboard({
 
   // Update current step when walkthrough state changes
   useEffect(() => {
-    if (walkthroughState) {
-      const step = getCurrentStep(walkthroughState);
+    if (walkthroughState && selectedModule) {
+      const step = getCurrentStep(walkthroughState, selectedModule);
       setCurrentStep(step);
     }
-  }, [walkthroughState]);
+  }, [walkthroughState, selectedModule]);
 
-  const handleScenarioSelect = (scenario: TrainingScenario) => {
-    const module = getTrainingModule(scenario.scenarioId, tenantId);
+  const handleScenarioSelect = (scenarioId: string) => {
+    const module = getTrainingModule(`module-${scenarioId}`, tenantId);
     if (module) {
       setSelectedModule(module);
       setWalkthroughState(null);
@@ -79,8 +78,8 @@ export function TrainingDashboard({
   const handleStartWalkthrough = () => {
     if (selectedModule) {
       const state = startTrainingSession(
-        tenantId,
         selectedModule.moduleId,
+        tenantId,
         facilityId
       );
       if (state) {
@@ -90,10 +89,10 @@ export function TrainingDashboard({
   };
 
   const handleNext = () => {
-    if (walkthroughState) {
-      const updatedState = nextStep(walkthroughState);
+    if (walkthroughState && selectedModule) {
+      const updatedState = nextStep(walkthroughState, selectedModule, tenantId, facilityId);
       setWalkthroughState(updatedState);
-      updateWalkthroughState(walkthroughState.sessionId, updatedState);
+      updateWalkthroughState(updatedState);
       
       // Check if walkthrough is complete
       if (isWalkthroughComplete(updatedState)) {
@@ -107,25 +106,32 @@ export function TrainingDashboard({
     if (walkthroughState) {
       const updatedState = previousStep(walkthroughState);
       setWalkthroughState(updatedState);
-      updateWalkthroughState(walkthroughState.sessionId, updatedState);
+      updateWalkthroughState(updatedState);
     }
   };
 
   const handleMarkComplete = () => {
-    if (walkthroughState && currentStep) {
-      const updatedState = markStepCompleted(walkthroughState, currentStep.stepNumber);
+    if (walkthroughState && currentStep && selectedModule) {
+      const updatedState = markStepCompleted(
+        walkthroughState,
+        walkthroughState.currentStepIndex,
+        selectedModule,
+        tenantId,
+        facilityId
+      );
       setWalkthroughState(updatedState);
-      updateWalkthroughState(walkthroughState.sessionId, updatedState);
+      updateWalkthroughState(updatedState);
     }
   };
 
   const handleRequestExplain = () => {
     if (currentStep && walkthroughState && selectedModule) {
       logExplainRequested(
-        tenantId,
         walkthroughState.sessionId,
         selectedModule.moduleId,
-        currentStep.stepNumber
+        currentStep.stepId,
+        tenantId,
+        facilityId
       );
       
       if (onRequestExplain) {
@@ -142,10 +148,11 @@ export function TrainingDashboard({
       
       if (incidentId) {
         logReplayRequested(
-          tenantId,
           walkthroughState.sessionId,
           selectedModule.moduleId,
-          incidentId
+          incidentId,
+          tenantId,
+          facilityId
         );
         
         if (onRequestReplay) {
@@ -159,7 +166,7 @@ export function TrainingDashboard({
     }
   };
 
-  const stats = getTrainingEngineStats(tenantId);
+  const stats = getTrainingEngineStats();
 
   return (
     <div style={styles.container}>
@@ -202,6 +209,7 @@ export function TrainingDashboard({
             <TrainingScenarioList
               scenarios={queryTrainingModules({
                 queryId: 'dashboard-query',
+                timestamp: new Date().toISOString(),
                 tenantId,
                 facilityId,
               }).modules.map(m => m.scenario)}

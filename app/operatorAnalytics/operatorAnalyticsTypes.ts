@@ -376,6 +376,7 @@ export interface OperatorMetricResult {
   
   success: boolean;
   error?: string;
+  computedAt?: string;
 }
 
 // ============================================================================

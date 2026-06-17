@@ -48,13 +48,19 @@ export class OrganizationVerificationEngine {
     switch (request.requestedLevel) {
       case 'certified':
         checks.push(...await this.performCertifiedLevelChecks(request));
-        // Fall through
+        checks.push(...await this.performPremiumLevelChecks(request));
+        checks.push(...await this.performStandardLevelChecks(request));
+        checks.push(...await this.performBasicLevelChecks(request));
+        break;
       case 'premium':
         checks.push(...await this.performPremiumLevelChecks(request));
-        // Fall through
+        checks.push(...await this.performStandardLevelChecks(request));
+        checks.push(...await this.performBasicLevelChecks(request));
+        break;
       case 'standard':
         checks.push(...await this.performStandardLevelChecks(request));
-        // Fall through
+        checks.push(...await this.performBasicLevelChecks(request));
+        break;
       case 'basic':
         checks.push(...await this.performBasicLevelChecks(request));
         break;

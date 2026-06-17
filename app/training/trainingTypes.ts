@@ -47,11 +47,13 @@ export interface TrainingStep {
   stepId: string;
   stepNumber: number;
   type: TrainingStepType;
+  /** Alias used by UI components */
+  stepType?: TrainingStepType;
   title: string;
   description: string;
   content: string; // Full step content
   safetyNotes?: string[];
-  references: {
+  references?: {
     sopIds?: string[];
     workflowIds?: string[];
     incidentIds?: string[];
@@ -59,8 +61,10 @@ export interface TrainingStep {
     capaIds?: string[];
     eventIds?: string[];
     kgNodeIds?: string[];
+    complianceEventIds?: string[];
   };
   expectedOutcome?: string;
+  expectedAction?: string;
   hints?: string[];
   checklistItems?: string[];
   rationale?: string; // Explanation via Narrative V2 hook
@@ -135,9 +139,15 @@ export interface TrainingSessionLogEntry {
   logId: string;
   timestamp: string; // ISO 8601
   entryType: TrainingSessionLogEntryType;
+  /** Alias for entryType used by UI components */
+  logType?: TrainingSessionLogEntryType;
   sessionId?: string;
   moduleId?: string;
   stepId?: string;
+  stepNumber?: number;
+  queryText?: string;
+  referenceId?: string;
+  referenceType?: string;
   tenantId: string;
   userId?: string;
   facilityId?: string;

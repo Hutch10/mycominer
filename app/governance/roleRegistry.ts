@@ -235,7 +235,7 @@ export class RoleRegistry {
 // ROLE FACTORIES
 // ============================================================================
 
-function createOperatorRole(tenantId: string, facilityId?: string): Role {
+export function createOperatorRole(tenantId: string, facilityId?: string): Role {
   return {
     id: 'role-operator',
     name: 'Operator',
@@ -254,7 +254,7 @@ function createOperatorRole(tenantId: string, facilityId?: string): Role {
   };
 }
 
-function createSupervisorRole(tenantId: string, facilityId?: string): Role {
+export function createSupervisorRole(tenantId: string, facilityId?: string): Role {
   return {
     id: 'role-supervisor',
     name: 'Supervisor',
@@ -278,7 +278,7 @@ function createSupervisorRole(tenantId: string, facilityId?: string): Role {
   };
 }
 
-function createFacilityAdminRole(tenantId: string, facilityId?: string): Role {
+export function createFacilityAdminRole(tenantId: string, facilityId?: string): Role {
   return {
     id: 'role-facility-admin',
     name: 'Facility Admin',

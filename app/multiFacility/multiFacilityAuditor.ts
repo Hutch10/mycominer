@@ -57,8 +57,8 @@ class MultiFacilityAuditor {
 
       // Labor risk
       if (
-        proposal.implementation.affectedFacilities.find((af) => af.facilityId === facilityId)
-          ?.estimatedHours > 40
+        (proposal.implementation.affectedFacilities.find((af) => af.facilityId === facilityId)
+          ?.estimatedHours ?? 0) > 40
       ) {
         riskScore += 10;
         rationale.push('Labor: significant implementation hours required');

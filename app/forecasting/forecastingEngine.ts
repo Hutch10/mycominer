@@ -2,26 +2,14 @@ import {
   BottleneckAnalysis,
   ForecastingInsight,
   ForecastingReport,
-  RoomCapacityProfile,
-  EquipmentAvailabilityProfile,
-  SubstrateInventoryProfile,
-  LaborAvailabilityProfile,
-  WorkflowTimingProfile,
+  ForecastingEngineInput,
 } from './forecastingTypes';
 import { computeCapacitySnapshot, CapacityModelerInput } from './capacityModeler';
 import { estimateThroughput, ThroughputEstimatorInput } from './throughputEstimator';
 import { calculateYieldRanges, YieldRangeInput } from './yieldRangeCalculator';
 import { addForecastLog } from './forecastingLog';
 
-export interface ForecastingEngineInput {
-  facilityId: string;
-  horizonDays: number;
-  rooms: RoomCapacityProfile[];
-  equipment: EquipmentAvailabilityProfile[];
-  substrate: SubstrateInventoryProfile;
-  labor: LaborAvailabilityProfile[];
-  workflows: WorkflowTimingProfile[];
-}
+export type { ForecastingEngineInput } from './forecastingTypes';
 
 export function buildDeterministicForecast(input: ForecastingEngineInput): ForecastingReport {
   const capacityInput: CapacityModelerInput = {

@@ -34,9 +34,10 @@ export function WalkthroughStepPanel({
     );
   }
 
+  const stepType = step.stepType ?? step.type;
   const isFirstStep = walkthroughState.currentStepIndex === 0;
   const isLastStep = walkthroughState.currentStepIndex === walkthroughState.totalSteps - 1;
-  const isStepCompleted = walkthroughState.completedSteps.includes(step.stepNumber);
+  const isStepCompleted = walkthroughState.completedSteps.includes(walkthroughState.currentStepIndex);
 
   const getStepTypeColor = (type: string): string => {
     const colors: Record<string, string> = {
@@ -56,8 +57,8 @@ export function WalkthroughStepPanel({
       <div style={styles.stepHeader}>
         <div style={styles.stepInfo}>
           <span style={styles.stepNumber}>Step {step.stepNumber} of {walkthroughState.totalSteps}</span>
-          <span style={{...styles.stepTypeBadge, backgroundColor: getStepTypeColor(step.stepType)}}>
-            {step.stepType}
+          <span style={{...styles.stepTypeBadge, backgroundColor: getStepTypeColor(stepType)}}>
+            {stepType}
           </span>
         </div>
         {isStepCompleted && (

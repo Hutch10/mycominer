@@ -13,6 +13,7 @@ import type {
   Federation,
   FederationMetric,
   FederationBenchmark,
+  FederationComparison,
   FederationDataCategory,
 } from './federationTypes';
 import { FederationAggregator } from './federationAggregator';
@@ -408,7 +409,7 @@ export class FederationEngine {
     }
 
     // Mock comparison (in production, aggregate metrics from each federation)
-    const comparisons = [];
+    const comparisons: FederationComparison[] = [];
 
     return { comparisons };
   }

@@ -58,11 +58,11 @@ export function TrainingProgressTracker({ walkthroughState }: TrainingProgressTr
             📊 Step History ({walkthroughState.stepHistory.length})
           </summary>
           <div style={styles.historyList}>
-            {walkthroughState.stepHistory.slice().reverse().map((step, idx) => (
+            {walkthroughState.stepHistory.slice().reverse().map((stepIndex, idx) => (
               <div key={idx} style={styles.historyItem}>
-                <span style={styles.historyStep}>Step {step.stepNumber}</span>
+                <span style={styles.historyStep}>Step {stepIndex + 1}</span>
                 <span style={styles.historyTime}>
-                  {new Date(step.viewedAt).toLocaleTimeString()}
+                  {new Date(walkthroughState.lastAccessedAt).toLocaleTimeString()}
                 </span>
               </div>
             ))}

@@ -77,7 +77,13 @@ class EnergyModel {
     days: number = 7,
     variancePercent: number = 5
   ): EnergyForecast {
-    const hourlyPrediction = [];
+    const hourlyPrediction: Array<{
+      hour: number;
+      forecastKwh: number;
+      baseline: number;
+      peak: number;
+      confidence: number;
+    }> = [];
     let totalKwh = 0;
 
     // Generate hourly forecast for specified period

@@ -28,7 +28,9 @@ class EdgeDeviceManager {
   async getDevice(id: string) { return { id, online: true, platform: 'edge', model: 'EdgeDevice' }; }
   async sendCommand(id: string, cmd: any) { console.log('Edge command:', cmd); }
   async getDeviceVersion(id: string) { return '2.0.0'; }
-  async getDeviceStatus(id: string) { return { deploymentStatus: 'completed', deploymentProgress: 100 }; }
+  async getDeviceStatus(id: string) {
+    return { deploymentStatus: 'completed' as const, deploymentProgress: 100, deploymentError: undefined as string | undefined };
+  }
 }
 
 export interface DistributionEvent {

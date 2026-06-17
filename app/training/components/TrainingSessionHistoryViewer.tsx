@@ -91,10 +91,10 @@ export function TrainingSessionHistoryViewer({ tenantId }: TrainingSessionHistor
           {filteredLogs.slice().reverse().map((log, idx) => (
             <div key={idx} style={styles.logItem}>
               <div style={styles.logHeader}>
-                <span style={{...styles.logIcon, color: getLogColor(log.logType)}}>
-                  {getLogIcon(log.logType)}
+                <span style={{...styles.logIcon, color: getLogColor(log.logType ?? log.entryType)}}>
+                  {getLogIcon(log.logType ?? log.entryType)}
                 </span>
-                <span style={styles.logType}>{log.logType}</span>
+                <span style={styles.logType}>{log.logType ?? log.entryType}</span>
                 <span style={styles.logTime}>
                   {new Date(log.timestamp).toLocaleString()}
                 </span>

@@ -158,6 +158,10 @@ export class OperatorAnalyticsEngine {
         workloadProfile,
         summary,
         metadata: {
+          executedAt: new Date().toISOString(),
+          dataSourceCounts: Object.fromEntries(
+            this.getDataSources(query.categories || []).map((source) => [source, 1])
+          ),
           executionTimeMs: 0, // Would be computed from start time
           dataSourcesQueried: this.getDataSources(query.categories || []),
           filtersApplied: this.getFiltersApplied(query),
@@ -397,9 +401,9 @@ export class OperatorAnalyticsEngine {
   ): {
     totalMetrics: number;
     byCategory: Record<string, number>;
-    overallSLAAdherence: number | null;
-    overallAverageResolutionTime: number | null;
-    overallThroughput: number | null;
+    overallSLAAdherence: number | undefined;
+    overallAverageResolutionTime: number | undefined;
+    overallThroughput: number | undefined;
   } {
     const byCategory: Record<string, number> = {};
 
@@ -418,13 +422,13 @@ export class OperatorAnalyticsEngine {
     
     const averageResolutionTime = remediationMetrics.length > 0
       ? remediationMetrics.reduce((sum, m) => sum + m.value, 0) / remediationMetrics.length
-      : null;
+      : undefined;
 
     return {
       totalMetrics: metrics.length,
       byCategory,
       overallSLAAdherence: slaMetric ? slaMetric.value : undefined,
-      overallAverageResolutionTime: averageResolutionTime || undefined,
+      overallAverageResolutionTime: averageResolutionTime,
       overallThroughput: throughputMetric ? throughputMetric.value : undefined,
     };
   }
@@ -451,6 +455,8 @@ export class OperatorAnalyticsEngine {
         overallThroughput: undefined,
       },
       metadata: {
+        executedAt: new Date().toISOString(),
+        dataSourceCounts: {},
         executionTimeMs: 0,
         dataSourcesQueried: [],
         filtersApplied: [],

@@ -9,6 +9,7 @@ let trainingSessionLog: TrainingSessionLogEntry[] = [];
 export function logTrainingEntry(entry: Omit<TrainingSessionLogEntry, 'logId'>): TrainingSessionLogEntry {
   const logEntry: TrainingSessionLogEntry = {
     logId: `tlog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    logType: entry.logType ?? entry.entryType,
     ...entry,
   };
   trainingSessionLog.push(logEntry);
@@ -206,3 +207,5 @@ export function clearTrainingSessionLog(): void {
 export function filterTrainingSessionLog(predicate: (entry: TrainingSessionLogEntry) => boolean): TrainingSessionLogEntry[] {
   return trainingSessionLog.filter(predicate);
 }
+
+export type { TrainingSessionLogEntry } from './trainingTypes';

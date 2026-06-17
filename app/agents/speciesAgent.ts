@@ -14,7 +14,6 @@ const climateToSpecies: Record<string, string[]> = {
 function evaluate(input: AgentInput): AgentOutput {
   const climate = (input.context?.climate as string)?.toLowerCase?.() || 'temperate';
   const experience = (input.context?.experience as string)?.toLowerCase?.() || 'beginner';
-  const goal = input.goal.toLowerCase();
 
   const candidates = climateToSpecies[climate] || climateToSpecies.temperate;
   const filtered = experience === 'beginner'

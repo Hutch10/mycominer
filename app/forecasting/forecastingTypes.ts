@@ -144,3 +144,13 @@ export interface ForecastingLogEntry {
   };
   details?: unknown;
 }
+
+export interface ForecastingEngineInput {
+  facilityId: string;
+  horizonDays: number;
+  rooms: RoomCapacityProfile[];
+  equipment: EquipmentAvailabilityProfile[];
+  substrate: SubstrateInventoryProfile;
+  labor: LaborAvailabilityProfile[];
+  workflows: WorkflowTimingProfile[];
+}

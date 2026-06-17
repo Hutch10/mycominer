@@ -315,7 +315,8 @@ export class FederationRegistry {
     }
 
     if (filters?.minTrustScore !== undefined) {
-      results = results.filter(org => org.trustScore >= filters.minTrustScore);
+      const minTrustScore = filters.minTrustScore;
+      results = results.filter(org => org.trustScore >= minTrustScore);
     }
 
     return results.sort((a, b) => b.trustScore - a.trustScore);

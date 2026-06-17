@@ -1,5 +1,5 @@
 import { buildDeterministicSOP } from './sopEngine';
-import { assembleSOP } from './sopAssembler';
+import { assembleSOP, WorkflowData } from './sopAssembler';
 import { SOPDocument } from './sopTypes';
 import { SOPDashboard } from './components/SOPDashboard';
 import { getSopLog } from './sopLog';
@@ -25,7 +25,7 @@ const workflowSample = {
     { noteId: 'heat', title: 'Hot Surfaces', description: 'Autoclave surfaces are hot post-cycle; allow cooldown.', severity: 'info' },
   ],
   timingNotes: 'Use existing workflow timing; no biological timing included.',
-};
+} satisfies WorkflowData;
 
 const baselineSop = assembleSOP({ workflow: workflowSample, category: 'workflow' });
 const approvedSop: SOPDocument = { ...baselineSop, version: { ...baselineSop.version, lifecycle: 'approved', versionId: 'v-approved' } };
