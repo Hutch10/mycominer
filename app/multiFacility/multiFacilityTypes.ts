@@ -33,13 +33,13 @@ export interface FacilityLoadSnapshot {
     utilizationPercent: number;
     currentBatch?: string;
   }[];
-  contention Level: 'low' | 'medium' | 'high';
+  contentionLevel: 'low' | 'medium' | 'high';
 }
 
 export interface FacilityRiskSnapshot {
   facilityId: string;
   timestamp: string;
-  contamination RiskScore: number; // 0-100
+  contaminationRiskScore: number; // 0-100
   equipmentFailureRisk: number; // 0-100
   laborShortageRisk: number; // 0-100
   energyBudgetRisk: number; // 0-100

@@ -25,6 +25,12 @@ class MeteringService {
     };
   }
 
+  async getUsage(orgId: string, start?: string, end?: string): Promise<UsageMetrics> {
+    const startDate = start ? new Date(start) : new Date(0);
+    const endDate = end ? new Date(end) : new Date();
+    return this.getMetrics(orgId, startDate, endDate);
+  }
+
   /**
    * Record usage event
    */

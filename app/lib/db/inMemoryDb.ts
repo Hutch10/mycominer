@@ -70,6 +70,10 @@ class InMemoryDb {
     this.ensureTable(tableName);
     return Array.from(this.tables.get(tableName)?.values() || []);
   }
+
+  query(tableName: string, predicate: (record: DbRecord) => boolean): DbRecord[] {
+    return this.all(tableName).filter(predicate);
+  }
 }
 
 export const db = new InMemoryDb();

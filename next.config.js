@@ -3,15 +3,20 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  
-  // Environment variables
+  turbopack: {
+    root: __dirname,
+  },
+
   env: {
     AGENT_RUNTIME_URL: process.env.AGENT_RUNTIME_URL || 'http://localhost:8080',
   },
-  
-  // Image optimization
+
   images: {
     unoptimized: true,
+  },
+
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 

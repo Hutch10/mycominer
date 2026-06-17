@@ -202,7 +202,7 @@ export interface InsightsEngineInterface {
   listKnowledgePacks(tenantId: string, facilityId?: string): Promise<KnowledgePack[]>;
   getInsight(insightId: string, tenantId: string): Promise<Insight | null>;
   getInsightsByCategory(category: InsightCategory, tenantId: string): Promise<Insight[]>;
-  recordInsightAccess(insightId: string | packId: string, tenantId: string): Promise<void>;
+  recordInsightAccess(insightOrPackId: string, tenantId: string): Promise<void>;
   getInsightsLog(tenantId: string, facilityId?: string, limit?: number): Promise<InsightsLogEntry[]>;
   initializeInsights(tenantIds: string[]): Promise<void>;
 }

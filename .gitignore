@@ -83,3 +83,4 @@ build/
 .yarn/install-state.gz
 .yarn/cache
 .pnp.*
+.vercel
