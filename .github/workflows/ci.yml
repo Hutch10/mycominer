@@ -9,7 +9,6 @@ jobs:
   test-and-build:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder
       SUPABASE_SERVICE_ROLE_KEY: test-service-role-key-do-not-ship
@@ -29,6 +28,7 @@ jobs:
 
       - run: npm run build
         env:
+          NODE_ENV: production
           MYCOMINER_GIT_COMMIT: ${{ github.sha }}
           MYCOMINER_BUILD_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
           MYCOMINER_MIGRATION_VERSION: '008'
@@ -36,3 +36,5 @@ jobs:
 
       - name: Scan production build for server-only secrets
         run: node scripts/scan-client-secrets.mjs
+        env:
+          NODE_ENV: production

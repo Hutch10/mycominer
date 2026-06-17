@@ -25,7 +25,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     /* Path alias */
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
