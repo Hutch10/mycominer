@@ -10,6 +10,7 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "node --import tsx --test tests/deployment-fingerprint.test.ts",
+    "test:persistence": "node --import tsx --test tests/deployment-fingerprint.test.ts tests/ga-operational.test.ts tests/persistence-operations.test.ts tests/persistence-security.test.ts tests/p1-closed-beta.test.ts",
     "scan-secrets": "node scripts/scan-client-secrets.mjs"
   },
   "dependencies": {
